@@ -3,6 +3,7 @@ package groupId.ru.hogwarts.school.controller;
 import groupId.ru.hogwarts.school.model.Faculty;
 import groupId.ru.hogwarts.school.model.Student;
 import groupId.ru.hogwarts.school.service.StudentService;
+import groupId.ru.hogwarts.school.service.StudentServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,23 @@ import java.util.List;
 public class StudentController {
     private final StudentService studentService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService, StudentServiceImpl studentServiceImpl) {
 
         this.studentService = studentService;
+        this.studentServiceImpl = studentServiceImpl;
     }
+    private final StudentServiceImpl studentServiceImpl;
+
+
+    @GetMapping("/sum-students-by-id")
+    public List<GetSumAndId> getSumStudentsById(){
+        return studentServiceImpl.getSumStudentsById();
+    }
+
+
+
+
+
 
     @GetMapping("/{id}/get")
     public ResponseEntity<Student> findStudents(@PathVariable long id) {

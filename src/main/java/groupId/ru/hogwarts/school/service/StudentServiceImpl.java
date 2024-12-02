@@ -1,6 +1,7 @@
 package groupId.ru.hogwarts.school.service;
 
 import groupId.ru.hogwarts.school.controller.FacultyRepository;
+import groupId.ru.hogwarts.school.controller.GetSumAndId;
 import groupId.ru.hogwarts.school.exepcion.StudentNotFoundException;
 import groupId.ru.hogwarts.school.model.Faculty;
 import groupId.ru.hogwarts.school.model.Student;
@@ -22,6 +23,31 @@ public class StudentServiceImpl implements StudentService {
         this.studentRepository = studentRepository;
         this.facultyRepository = facultyRepository;
     }
+
+public List<GetSumAndId> getSumStudentsById(){
+        return studentRepository.getSummaStudentsById();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Override
