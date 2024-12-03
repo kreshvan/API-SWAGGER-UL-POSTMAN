@@ -15,7 +15,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     //int minNumber = 0;
     //int maxNumber = MAX_VALUE;
     List<Student> findByAgeBetween(int min, int max);
-    @Query(value = "SELECT category,SUM (id) as id From students GROUP BY category",nativeQuery = true)
+    @Query(value = "SELECT count", nativeQuery = true)
     List<GetSumAndId>getSummaStudentsById();
 
 

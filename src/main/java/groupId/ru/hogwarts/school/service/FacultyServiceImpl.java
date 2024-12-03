@@ -20,7 +20,7 @@ public class FacultyServiceImpl implements FacultyService {
 
     public FacultyServiceImpl(StudentRepository studentRepository, FacultyRepository facultyRepository) {
         this.studentRepository = studentRepository;
-        this.facultyRepository = facultyRepository;
+        this.facultyRepository =  facultyRepository;
     }
 
     @Override

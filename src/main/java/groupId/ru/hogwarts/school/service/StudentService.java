@@ -12,7 +12,7 @@ public interface StudentService {
 
     void editStudent( Student student);
 
-    void deleteStudent(long id);
+    void deleteStudent(long id) ;
 
     List<Student> findByAgeBetween(int min, int max);
 

@@ -24,7 +24,7 @@ public class StudentServiceImpl implements StudentService {
         this.facultyRepository = facultyRepository;
     }
 
-public List<GetSumAndId> getSumStudentsById(){
+public List<GetSumAndId>  getSumStudentsById(){
         return studentRepository.getSummaStudentsById();
 }
 

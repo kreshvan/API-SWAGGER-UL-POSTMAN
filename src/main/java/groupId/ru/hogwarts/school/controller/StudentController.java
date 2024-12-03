@@ -37,7 +37,7 @@ public class StudentController {
 
 
 
-    @GetMapping("/{id}/get")
+    @GetMapping("/get/{id}")
     public ResponseEntity<Student> findStudents(@PathVariable long id) {
         Student student = studentService.findStudent(id);
         if (student == null) {
@@ -53,7 +53,7 @@ public class StudentController {
 
     }
 
-    @PutMapping("/{id}/edit")
+    @PutMapping ("/edit/{id}")
     public void editStudent(@RequestBody Student student) {
         studentService.editStudent(student);
 

@@ -67,7 +67,7 @@ class FacultyControllerTest {
     }
 
     @Test
-    void CorrectEditFaculty() throws Exception {
+    void CorrectEditFaculty() throws  Exception {
 
 //TEST//CHECK
         long id = nextInt(10, 100);

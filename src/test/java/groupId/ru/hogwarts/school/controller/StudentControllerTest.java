@@ -4,13 +4,16 @@ import com.github.javafaker.Faker;
 import groupId.ru.hogwarts.school.model.Student;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -21,11 +24,10 @@ class StudentControllerTest {
     @Autowired
     private StudentRepository studentRepository;
     @LocalServerPort
-    private int port; // амостоятельно делает запросы в приложении
+    private int port; // самостоятельно делает запросы в приложении
     private final Faker faker = new Faker();
     @Autowired
     private TestRestTemplate testRestTemplate;
-
     //TestRestTemplate – это удобная альтернатива RestTemplate из Spring,
     // которая полезна в рамках интеграционных тестов. ИМЕЕТ МЕТОДЫ ДЛЯ ТЕСТИРОВАНИЯ.
     // Можно получить ванильный шаблон или тот, который отправляет базовую HTTP-аутентификацию
@@ -80,7 +82,7 @@ class StudentControllerTest {
 
     @Test
     @DisplayName("Корректно удаляет студента !")
-    void deleteStudent() {
+    void deleteStudent()  {
         Student student = new Student(faker.harryPotter().character(), nextInt());
         studentRepository.save(student);
 
@@ -125,4 +127,23 @@ class StudentControllerTest {
 
         return "http://localhost:%d%s".formatted(port, path);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

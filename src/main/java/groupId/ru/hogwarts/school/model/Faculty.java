@@ -30,7 +30,7 @@ public class Faculty {
         this.students = students;
     }
 
-    public Faculty(String name, String color) {
+    public Faculty(String  name, String color) {
     }
 
     public List<Student> getStudents() {

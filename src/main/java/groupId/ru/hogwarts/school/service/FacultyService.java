@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-public interface FacultyService {
+public interface FacultyService  {
     Faculty addFaculty(Faculty faculty);
 
     Faculty findFaculty(long id);

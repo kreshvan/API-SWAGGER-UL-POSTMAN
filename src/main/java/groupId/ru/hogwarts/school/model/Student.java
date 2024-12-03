@@ -71,7 +71,7 @@ public class Student {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals (Object obj) {
         return Objects.equals(id, ((Student) obj).id);
     }
 }

@@ -49,7 +49,7 @@
             return ResponseEntity.ok(foundFaculty);
         }
 
-        @DeleteMapping("/{id}/delete")
+        @DeleteMapping ("/{id}/delete")
         public ResponseEntity<Void> deleteDelete(@PathVariable long id) {
             facultyService.deleteFaculty(id);
             return ResponseEntity.ok().build();
