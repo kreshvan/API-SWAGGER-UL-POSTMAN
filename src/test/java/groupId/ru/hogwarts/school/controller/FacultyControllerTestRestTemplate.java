@@ -97,10 +97,4 @@ public class FacultyControllerTestRestTemplate {
         assertThat(actualFaculty).isNotNull();
 
     }
-
-
-
-
-
-
 }

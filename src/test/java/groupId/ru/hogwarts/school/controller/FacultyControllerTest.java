@@ -1,8 +1,6 @@
 package groupId.ru.hogwarts.school.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonNumberFormatVisitor;
 import groupId.ru.hogwarts.school.model.Faculty;
 import groupId.ru.hogwarts.school.service.FacultyServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -10,26 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.data.web.JsonPath;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-
-import javax.management.remote.JMXConnector;
 
 import java.util.Optional;
 
 import static org.apache.commons.lang3.RandomUtils.nextInt;
-import static org.apache.commons.lang3.RandomUtils.nextLong;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(FacultyController.class)
 class FacultyControllerTest {
@@ -44,6 +35,8 @@ class FacultyControllerTest {
     // (искусственные объекты, имитирующие поведение настоящих объектов).
     private FacultyRepository facultyRepository;
 
+    @MockBean
+    private StudentRepository studentRepository;
 
     @Autowired
     private ObjectMapper objectMapper;// ФУНКЦИЯ  преобразование объекта Java в строку JSON И  наоборот
@@ -53,7 +46,7 @@ class FacultyControllerTest {
     void correctAddFaculty() throws Exception {
         Faculty faculty = new Faculty("Oleg", "color");
         String facultyString = objectMapper.writeValueAsString(faculty);
-//when(facultyRepository.save(any(Faculty.class).)
+when(facultyRepository.save(any(Faculty.class))).thenReturn(faculty);
 //test and check
         mockMvc.perform(post("/faculty/add/")
                         .content(facultyString)

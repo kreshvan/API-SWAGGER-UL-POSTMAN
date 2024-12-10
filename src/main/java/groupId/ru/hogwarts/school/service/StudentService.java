@@ -1,7 +1,7 @@
 package groupId.ru.hogwarts.school.service;
 
-import groupId.ru.hogwarts.school.model.Faculty;
 import groupId.ru.hogwarts.school.model.Student;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,5 +18,8 @@ public interface StudentService {
 
     List<Student> findStudentByFacultyId(long id);
 
+void saveAvatar(long id, MultipartFile file);
 
+
+boolean deleteAvatar(long id);
 }

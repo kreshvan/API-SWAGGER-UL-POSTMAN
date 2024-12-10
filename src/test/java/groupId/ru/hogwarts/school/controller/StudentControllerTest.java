@@ -126,24 +126,5 @@ class StudentControllerTest {
     private String configureUrl(String path) {
 
         return "http://localhost:%d%s".formatted(port, path);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        }
 }

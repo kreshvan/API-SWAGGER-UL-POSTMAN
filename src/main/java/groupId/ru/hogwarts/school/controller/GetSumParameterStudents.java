@@ -1,6 +1,6 @@
 package groupId.ru.hogwarts.school.controller;
 
-public interface GetSumAndId {
+public interface GetSumParameterStudents {
     String getStudents();
-    Integer getSummaId();
+    Integer getSumId();
 }

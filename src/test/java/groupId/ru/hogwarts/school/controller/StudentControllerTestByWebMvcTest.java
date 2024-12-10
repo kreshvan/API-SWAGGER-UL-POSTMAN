@@ -87,16 +87,5 @@ void CorrectEditStudent()  throws Exception {
             .andExpect(jsonPath("$.name").value(student.getName()))
             .andExpect(jsonPath("$.color").value(student.getAge())
             );
-
-
 }
-
-
-
-
-
-
-
-
-
 }

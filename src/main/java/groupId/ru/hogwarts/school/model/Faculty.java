@@ -22,6 +22,8 @@ public class Faculty {
     @JsonIgnore
     private List<Student> students;
 
+    public Faculty() {
+    }
 
     public Faculty(Long id, String name, String color, List<Student> students) {
         this.id = id;
