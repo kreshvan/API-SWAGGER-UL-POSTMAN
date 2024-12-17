@@ -5,6 +5,8 @@ import groupId.ru.hogwarts.school.controller.GetSumParameterStudents;
 import groupId.ru.hogwarts.school.exepcion.StudentNotFoundException;
 import groupId.ru.hogwarts.school.model.Faculty;
 import groupId.ru.hogwarts.school.model.Student;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -30,6 +32,8 @@ public class StudentServiceImpl implements StudentService {
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
 
+    private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
+
     @Value("${image.path}")
     private String uploadDir;
 
@@ -38,20 +42,56 @@ public class StudentServiceImpl implements StudentService {
         this.facultyRepository = facultyRepository;
     }
 
+    @Override
+    public Student addStudent(Student student) {
+        logger.info("Was invoked method for add student");
+        //put-поместить
+        return studentRepository.save(student);
+    }
+
+
+    @Override
+    public Student findStudent(long id) {
+        logger.info("Was invoked method for find student");
+        logger.error("Student Not Found Exception="+ id);
+
+        return studentRepository.findById(id)
+                                .orElseThrow(() -> new StudentNotFoundException(id));
+          //logger.error("Student Not Found Exception="+ id);
+    }
+
+    @Override
+    public void editStudent(Student student) {
+        logger.info("Was invoked method for edit student");
+        studentRepository.save(student);
+
+    }
+
+    @Override
+    public void deleteStudent(long id) {
+        logger.info("Was invoked method for delete student");
+        Student student = studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        studentRepository.deleteById(student.getId());
+        logger.error("Student Not Found  Exception="+ id);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     @Autowired
     public List<Student> findAllPage(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber  -1, pageSize);
         return studentRepository.findAll(pageable).getContent();    }
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public void saveAvatar(long id, MultipartFile file) {
@@ -66,7 +106,6 @@ public class StudentServiceImpl implements StudentService {
         throw new RuntimeException(e);
     }
 }
-
 
     @Override
     public boolean deleteAvatar(long id) {
@@ -96,52 +135,6 @@ public List<getLastFiveStudentsById>getLastFiveStudentsByIdResults(){
         return studentRepository.getLastFiveStudentsByIdResult();
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @Override
-    public Student addStudent(Student student) {
-        //put-поместить
-        return studentRepository.save(student);
-    }
-
-
-    @Override
-    public Student findStudent(long id) {
-
-        return studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
-    }
-
-    @Override
-    public void editStudent(Student student) {
-        studentRepository.save(student);
-
-    }
-
-    @Override
-    public void deleteStudent(long id) {
-        Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new StudentNotFoundException(id));
-        studentRepository.deleteById(student.getId());
-    }
 
     @Override
     public List<Student> findByAgeBetween(int min, int max) {
