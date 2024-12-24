@@ -9,6 +9,7 @@ import org.webjars.NotFoundException;
 import groupId.ru.hogwarts.school.controller.FacultyRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 
@@ -22,6 +23,29 @@ public class FacultyServiceImpl implements FacultyService {
         this.studentRepository = studentRepository;
         this.facultyRepository =  facultyRepository;
     }
+    @Override
+    public String findLongName(List<Faculty>faculties) {
+        Optional<Faculty> longestFaculty = faculties.stream()
+                .max((faculty1, faculty2) ->
+                        Integer.compare(faculty1.getName().length(),faculty2.getName().length()));
+return longestFaculty.map(Faculty::getName).orElse("Факультет не найден!!!");
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Override
     public Faculty addFaculty(Faculty faculty) {

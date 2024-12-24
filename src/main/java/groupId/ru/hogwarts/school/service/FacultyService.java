@@ -1,6 +1,7 @@
 package groupId.ru.hogwarts.school.service;
 
 import groupId.ru.hogwarts.school.model.Faculty;
+import groupId.ru.hogwarts.school.model.Student;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -17,4 +18,5 @@ public interface FacultyService  {
     List<Faculty> findFacultyByNameOrColorIgnoreCase(String name, String color);
 
     Faculty findFacultyByStudentId(long id);
+    String findLongName(List<Faculty>faculties);
 }

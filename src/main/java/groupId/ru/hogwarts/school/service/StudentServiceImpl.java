@@ -7,23 +7,21 @@ import groupId.ru.hogwarts.school.model.Faculty;
 import groupId.ru.hogwarts.school.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.webjars.NotFoundException;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 
@@ -31,16 +29,50 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final FacultyRepository facultyRepository;
-
+    private final Student student;
     private final static Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
     @Value("${image.path}")
     private String uploadDir;
 
-    public StudentServiceImpl(StudentRepository studentRepository, FacultyRepository facultyRepository) {
+    public StudentServiceImpl(StudentRepository studentRepository, FacultyRepository facultyRepository, Student student) {
         this.studentRepository = studentRepository;
         this.facultyRepository = facultyRepository;
+        this.student = student;
     }
+
+
+    @Override
+    public List<Student> findAllStudentsNameThisA() {
+        List<Student> students = studentRepository.findAll();
+        return students.stream()// помещаем students в работу STREAM
+                .filter(name -> student.getName().startsWith("A"))//фильтруем каждое имя по порядку на содержание в имени А
+                .sorted()//сортируем по логике алфавита
+                .collect(Collectors.toList());//создаем коллекцию
+
+    }
+
+    @Override
+    public double findAllStudentsMiddleAge() {
+        List<Student> students = studentRepository.findAll();
+        return students.stream()
+                .mapToInt(Student::getAge)//переводит все значения age в (Student) в INT
+                .average()//среднее значение из age
+                .orElse(0.0); //double - дробные значения // выводит ошибку если значения нет или оно 0.0
+    }
+
+    @Override
+    public long findSummaStudents() {
+        List<Student> students = studentRepository.findAll();
+        long sum =
+                Stream.iterate(1, a -> a + 1).
+                        limit(1_000_000).reduce(0, (a, b) -> a + b);
+        return students.stream()
+                .mapToLong(Student::getId)
+                .sum();
+
+    }
+
 
     @Override
     public Student addStudent(Student student) {
@@ -53,11 +85,11 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findStudent(long id) {
         logger.info("Was invoked method for find student");
-        logger.error("Student Not Found Exception="+ id);
+        logger.error("Student Not Found Exception=" + id);
 
         return studentRepository.findById(id)
-                                .orElseThrow(() -> new StudentNotFoundException(id));
-          //logger.error("Student Not Found Exception="+ id);
+                .orElseThrow(() -> new StudentNotFoundException(id));
+        //logger.error("Student Not Found Exception="+ id);
     }
 
     @Override
@@ -73,39 +105,28 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepository.findById(id)
                 .orElseThrow(() -> new StudentNotFoundException(id));
         studentRepository.deleteById(student.getId());
-        logger.error("Student Not Found  Exception="+ id);
+        logger.error("Student Not Found  Exception=" + id);
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-    @Autowired
+    @Override
     public List<Student> findAllPage(Integer pageNumber, Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber  -1, pageSize);
-        return studentRepository.findAll(pageable).getContent();    }
+        Pageable pageable = PageRequest.of(pageNumber - 1, pageSize);
+        return studentRepository.findAll(pageable).getContent();
+    }
 
     @Override
     public void saveAvatar(long id, MultipartFile file) {
         try {
-        if (Files.notExists(Path.of(uploadDir))) {
+            if (Files.notExists(Path.of(uploadDir))) {
                 Files.createDirectory(Path.of(uploadDir));
+            }
+            Path path = Path.of(uploadDir, UUID.randomUUID() + file.getOriginalFilename());
+            file.transferTo(path);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        Path path = Path.of(uploadDir, UUID.randomUUID() + file.getOriginalFilename());
-        file.transferTo(path);
-    } catch(IOException e)
-    {
-        throw new RuntimeException(e);
     }
-}
 
     @Override
     public boolean deleteAvatar(long id) {
@@ -119,21 +140,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
 
-
-
-
-    public List<GetSumParameterStudents>getSumStudents(){
+    public List<GetSumParameterStudents> getSumStudents() {
 
         return studentRepository.getSumStudents();
-}
+    }
 
-public List<GetAvgStudents>getResultAvgAgeStudents(){
+    public List<GetAvgStudents> getResultAvgAgeStudents() {
         return studentRepository.getResultAvgAgeStudents();
-}
+    }
 
-public List<getLastFiveStudentsById>getLastFiveStudentsByIdResults(){
+    public List<getLastFiveStudentsById> getLastFiveStudentsByIdResults() {
         return studentRepository.getLastFiveStudentsByIdResult();
-}
+    }
 
 
     @Override
