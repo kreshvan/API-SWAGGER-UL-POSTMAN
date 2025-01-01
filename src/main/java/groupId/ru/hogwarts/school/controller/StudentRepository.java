@@ -30,4 +30,5 @@ public interface StudentRepository extends JpaRepository<Student, Long>, PagingA
 
 List<Student>findAllPage(Pageable pageable);
 
+    Student getById(int i,int q);
 }

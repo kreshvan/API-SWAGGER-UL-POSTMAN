@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,6 +36,37 @@ public class StudentController {
     }
 
     private final StudentServiceImpl studentServiceImpl;
+
+
+    @GetMapping("GET/students/print-parallel")
+    public List<Student> getStudents() {
+        System.out.println(studentRepository.getById(0, 1).getName());
+
+        new Thread(() ->
+                System.out.println(studentRepository.getById(3, 4).getName())).start();
+        new Thread(() ->
+                System.out.println(studentRepository.getById(5, 6).getName())).start();
+        return null;
+    }
+
+
+    private synchronized void printStudents(List<Student> students) {
+        students.forEach(System.out::println);
+    }
+
+
+    @GetMapping("GET /students/print-synchronized")
+    public void getSynchronizedStudents() {
+        List<Student> students = Arrays.asList();
+        printStudents(students.subList(0, 2));
+        new Thread(() ->
+                printStudents(students.subList(2, 5))).start();
+        new Thread(() ->
+                printStudents(students.subList(5, 7))).start();
+
+
+    }
+
 
     @GetMapping("/student/findAll-name-this-A")
     public List<Student> findAllStudentsNameThisA() {
@@ -65,7 +97,7 @@ public class StudentController {
         if (id >= 0 || file != null) {
             return new ResponseEntity<>("Аватарка успешно загружена", HttpStatus.OK);
         }
-        return new ResponseEntity<>("Ошибка при загрузке аватарки", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Ошибка при загрузке аватарки", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/avatar/{id}")
