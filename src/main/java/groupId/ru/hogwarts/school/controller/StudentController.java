@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping("/student")
 
-public class StudentController {
+public class  StudentController {
     private final StudentService studentService;
     @Autowired
     private StudentRepository studentRepository;
