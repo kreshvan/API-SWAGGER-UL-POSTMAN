@@ -54,7 +54,6 @@ public class StudentController {
         students.forEach(System.out::println);
     }
 
-
     @GetMapping("GET /students/print-synchronized")
     public void getSynchronizedStudents() {
         List<Student> students = Arrays.asList();
